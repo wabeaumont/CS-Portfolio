@@ -230,12 +230,32 @@ void player2Turn(BOARD *board, int *win, int *player2wins) {
 }
 
 //function that runs a single turn for the computer
-/*void computerTurn(BOARD *board, int *win) {
+void computerTurn(BOARD *board, int *win, int *player2wins) {
+  /*//computer chooses a column to drop a piece into
 
-}*/
+
+  //piece is placed into the board
+  int rowNum = 0;
+  while (getValCELL(getCell(board, rowNum + 1, colNum)) == ' ' && rowNum < getRowBOARD(board) - 2) {
+    rowNum = rowNum + 1;
+  }
+  if (getValCELL(getCell(board, getRowBOARD(board) - 1, colNum)) == ' ')
+    rowNum = getRowBOARD(board) - 1;
+
+  setValCELL(getCell(board, rowNum, colNum), 'O');
+
+  displayBOARD(board);
+
+  //check for win condition
+  if (connected2(getCell(board, rowNum, colNum), board) == true) {
+    printf("Player 2 Wins! (Total Score: %d)\n", *player2wins);
+    *win = *win + 1;
+    *player2wins = *player2wins + 1;
+  }*/
+}
 
 //function that incorporates previous ones into a playable version
-void runSingle() {
+void runSingle(int *player1wins, int *player2wins) {
   //print size menu display
   printf("\n");
   printf("* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n");
@@ -259,13 +279,21 @@ void runSingle() {
   scanf("%[^\n]%*c", mode);
 
   //if standard size is chosen
-  if (strcmp(mode, "standard") == 0 || strcmp(mode, "Standard") == 0) {
+  if (strncmp(mode, "standard", 8) == 0 || strncmp(mode, "Standard", 8) == 0) {
     BOARD *board = newBOARD(6, 7);
-
     displayBOARD(board);
+
+    //begin game
+    int win = 0;
+    //until the win condition is met, the game will continue
+    while (win == 0) {
+      player1Turn(board, &win, player1wins);
+      if (win == 0)
+        computerTurn(board, &win, player2wins);
+    }
   }
   //if custom size is chosen
-  else if (strcmp(mode, "custom") == 0 || strcmp(mode, "Custom") == 0) {
+  else if (strncmp(mode, "custom", 8) == 0 || strncmp(mode, "Custom", 8) == 0) {
     int h = 0;
     int w = 0;
     printf("\nEnter board height: ");
@@ -287,16 +315,25 @@ void runSingle() {
       }
     }
     BOARD *board = newBOARD(h, w);
-
     displayBOARD(board);
 
-    /*int win = 0;
+    //begin game
+    int win = 0;
     //until the win condition is met, the game will continue
     while (win == 0) {
-      player1Turn(board, &win);
+      player1Turn(board, &win, player1wins);
       if (win == 0)
-        computerTurn(board, &win);
-    }*/
+        computerTurn(board, &win, player2wins);
+    }
+  }
+  //if players wish to rematch
+  char rematch;
+  printf("\nRematch? Y/N ");
+  scanf("%1c", &rematch);
+  scanf("%1c", &rematch);
+  if (rematch == 'Y' || rematch == 'y') {
+    scanf("%1c", &rematch);
+    runSingle(player1wins, player2wins);
   }
 }
 
@@ -322,9 +359,15 @@ void runMulti(int *player1wins, int *player2wins) {
   //read the input from user to determine board size
   char mode[8];
   scanf("%[^\n]%*c", mode);
+  if (strncmp(mode, "standard", 8) != 0 && strncmp(mode, "Standard", 8) != 0 && strncmp(mode, "custom", 8) != 0 && strncmp(mode, "Custom", 8) != 0) {
+    while (strncmp(mode, "standard", 8) != 0 && strncmp(mode, "Standard", 8) != 0 && strncmp(mode, "custom", 8) != 0 && strncmp(mode, "Custom", 8) != 0) {
+      printf("Invalid choice. Please choose one of the listed options.\n");
+      scanf("%[^\n]%*c", mode);
+    }
+  }
 
   //if standard size is chosen
-  if (strcmp(mode, "standard") == 0 || strcmp(mode, "Standard") == 0) {
+  if (strncmp(mode, "standard", 8) == 0 || strncmp(mode, "Standard", 8) == 0) {
     BOARD *board = newBOARD(6, 7);
     displayBOARD(board);
     //begin game
@@ -337,7 +380,7 @@ void runMulti(int *player1wins, int *player2wins) {
     }
   }
   //if custom size is chosen
-  else if (strcmp(mode, "custom") == 0 || strcmp(mode, "Custom") == 0) {
+  else if (strncmp(mode, "custom", 8) == 0 || strncmp(mode, "Custom", 8) == 0) {
     int h = 0;
     int w = 0;
     printf("\nEnter board height: ");
@@ -370,15 +413,14 @@ void runMulti(int *player1wins, int *player2wins) {
     }
   }
   //if players wish to rematch
-  //char rematch = 'n';
-  //int rematch = 0;
-  char rematch[3];
-  printf("\nRematch? Yes/No ");
-  scanf("%[^\n]%*c", rematch);
-  //scanf("%c", &rematch);
-  if (strcmp(rematch, "Yes") == 0 || strcmp(rematch, "yes") == 0)
-  //if (rematch == 1)
+  char rematch;
+  printf("\nRematch? Y/N ");
+  scanf("%1c", &rematch);
+  scanf("%1c", &rematch);
+  if (rematch == 'Y' || rematch == 'y') {
+    scanf("%1c", &rematch);
     runMulti(player1wins, player2wins);
+  }
 }
 
 void menu() {
@@ -402,13 +444,19 @@ void menu() {
   //read the input from user to determine game mode
   char mode[13];
   scanf("%[^\n]%*c", mode);
+  if (strncmp(mode, "single player", 13) != 0 && strncmp(mode, "Single Player", 13) != 0 && strncmp(mode, "multiplayer", 13) != 0 && strncmp(mode, "Multiplayer", 13) != 0) {
+    while (strncmp(mode, "single player", 13) != 0 && strncmp(mode, "Single Player", 13) != 0 && strncmp(mode, "multiplayer", 13) != 0 && strncmp(mode, "Multiplayer", 13) != 0) {
+      printf("Invalid choice. Please choose one of the listed options.\n");
+      scanf("%[^\n]%*c", mode);
+    }
+  }
 
-  int player1wins = 0;
-  int player2wins = 0;
+  int player1wins = 1;
+  int player2wins = 1;
   //if single player is chosen
-  if (strcmp(mode, "single player") == 0 || strcmp(mode, "Single Player") == 0)
-    runSingle();
+  if (strncmp(mode, "single player", 13) == 0 || strncmp(mode, "Single Player", 13) == 0)
+    runSingle(&player1wins, &player2wins);
   //if multiplayer is chosen
-  else if (strcmp(mode, "multiplayer") == 0 || strcmp(mode, "Multiplayer") == 0)
+  else if (strncmp(mode, "multiplayer", 13) == 0 || strncmp(mode, "Multiplayer", 13) == 0)
     runMulti(&player1wins, &player2wins);
 }
