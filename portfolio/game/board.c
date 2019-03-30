@@ -160,8 +160,10 @@ void displayBOARD(BOARD *board) {
       printf(" %d  ", i + 1);
     else if (i < 98)
       printf(" %d ", i + 1);
-    else if (i < 998)
+    else if (i < 1000)
       printf(" %d", i + 1);
+    else 
+      printf("%d", i + 1);
   }
   printf("\n\n");
 }

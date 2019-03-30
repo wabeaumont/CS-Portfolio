@@ -275,12 +275,19 @@ void runSingle(int *player1wins, int *player2wins) {
   printf("* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n");
 
   //read the input from user to determine board size
-  char mode[9];
-  fgets(mode, 9, stdin);
+  char mode[10];
+  char cleanup = ' ';
+  fgets(mode, 10, stdin);
   if (strncmp(mode, "standard", 8) != 0 && strncmp(mode, "Standard", 8) != 0 && strncmp(mode, "custom", 6) != 0 && strncmp(mode, "Custom", 6) != 0) {
-    printf("Invalid choice. Please choose one of the listed options.\n");
     while (strncmp(mode, "standard", 8) != 0 && strncmp(mode, "Standard", 8) != 0 && strncmp(mode, "custom", 6) != 0 && strncmp(mode, "Custom", 6) != 0) {
-      fgets(mode, 9, stdin);
+      if (strlen(mode) > 8) {
+        cleanup = ' ';
+        while (cleanup != '\n') {
+          scanf("%1c", &cleanup);
+        }
+      }
+      printf("Invalid choice. Please choose one of the listed options.\n");
+      fgets(mode, 10, stdin);
     }
   }
 
@@ -297,27 +304,33 @@ void runSingle(int *player1wins, int *player2wins) {
       if (win == 0)
         computerTurn(board, &win, player2wins);
     }
+    freeBOARD(board);
   }
   //if custom size is chosen
   else if (strncmp(mode, "custom", 6) == 0 || strncmp(mode, "Custom", 6) == 0) {
     int h = 0;
     int w = 0;
+    char conversionString[6];
     printf("\nEnter board height: ");
-    scanf("%d", &h);
+    fgets(conversionString, 6, stdin);
+    h = atoi(conversionString);
     if (h < 4) {
       while (h < 4) {
         printf("Invalid board height. Please enter a height greater than 3.");
         printf("\nEnter board height: ");
-        scanf("%d", &h);
+        fgets(conversionString, 6, stdin);
+        h = atoi(conversionString);
       }
     }
     printf("Enter board width: ");
-    scanf("%d", &w);
+    fgets(conversionString, 6, stdin);
+    w = atoi(conversionString);
     if (w < 4) {
       while (w < 4) {
         printf("Invalid board width. Please enter a width greater than 3.");
         printf("\nEnter board width: ");
-        scanf("%d", &w);
+        fgets(conversionString, 6, stdin);
+        w = atoi(conversionString);
       }
     }
     BOARD *board = newBOARD(h, w);
@@ -331,7 +344,10 @@ void runSingle(int *player1wins, int *player2wins) {
       if (win == 0)
         computerTurn(board, &win, player2wins);
     }
+    freeBOARD(board);
   }
+
+
   //if players wish to rematch
   char rematch;
   printf("\nRematch? Y/N ");
@@ -363,12 +379,19 @@ void runMulti(int *player1wins, int *player2wins) {
   printf("* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n");
 
   //read the input from user to determine board size
-  char mode[9];
-  fgets(mode, 9, stdin);
+  char mode[10];
+  char cleanup = ' ';
+  fgets(mode, 10, stdin);
   if (strncmp(mode, "standard", 8) != 0 && strncmp(mode, "Standard", 8) != 0 && strncmp(mode, "custom", 6) != 0 && strncmp(mode, "Custom", 6) != 0) {
-    printf("Invalid choice. Please choose one of the listed options.\n");
     while (strncmp(mode, "standard", 8) != 0 && strncmp(mode, "Standard", 8) != 0 && strncmp(mode, "custom", 6) != 0 && strncmp(mode, "Custom", 6) != 0) {
-      fgets(mode, 9, stdin);
+      if (strlen(mode) > 8) {
+        cleanup = ' ';
+        while (cleanup != '\n') {
+          scanf("%1c", &cleanup);
+        }
+      }
+      printf("Invalid choice. Please choose one of the listed options.\n");
+      fgets(mode, 10, stdin);
     }
   }
 
@@ -384,27 +407,33 @@ void runMulti(int *player1wins, int *player2wins) {
       if (win == 0)
         player2Turn(board, &win, player2wins);
     }
+    freeBOARD(board);
   }
   //if custom size is chosen
   else if (strncmp(mode, "custom", 6) == 0 || strncmp(mode, "Custom", 6) == 0) {
     int h = 0;
     int w = 0;
+    char conversionString[6];
     printf("\nEnter board height: ");
-    scanf("%d", &h);
+    fgets(conversionString, 6, stdin);
+    h = atoi(conversionString);
     if (h < 4) {
       while (h < 4) {
         printf("Invalid board height. Please enter a height greater than 3.");
         printf("\nEnter board height: ");
-        scanf("%d", &h);
+        fgets(conversionString, 6, stdin);
+        h = atoi(conversionString);
       }
     }
     printf("Enter board width: ");
-    scanf("%d", &w);
+    fgets(conversionString, 6, stdin);
+    w = atoi(conversionString);
     if (w < 4) {
       while (w < 4) {
         printf("Invalid board width. Please enter a width greater than 3.");
         printf("\nEnter board width: ");
-        scanf("%d", &w);
+        fgets(conversionString, 6, stdin);
+        w = atoi(conversionString);
       }
     }
     BOARD *board = newBOARD(h, w);
@@ -417,16 +446,48 @@ void runMulti(int *player1wins, int *player2wins) {
       if (win == 0)
         player2Turn(board, &win, player2wins);
     }
+    freeBOARD(board);
   }
   //if players wish to rematch
-  char rematch;
+  /*char rematch;
   printf("\nRematch? Y/N ");
   scanf("%1c", &rematch);
   scanf("%1c", &rematch);
+  if (rematch != 'Y' && rematch != 'y' && rematch != 'N' && rematch != 'n') {
+    printf("Invalid choice. Please choose one of the listed options.\n");
+    while (rematch != 'Y' && rematch != 'y' && rematch != 'N' && rematch != 'n') {
+      scanf("%1c", &rematch);
+      scanf("%1c", &rematch);
+    }
+  }
   if (rematch == 'Y' || rematch == 'y') {
     scanf("%1c", &rematch);
     runMulti(player1wins, player2wins);
   }
+  else if (rematch == 'N' || rematch == 'n') {
+    scanf("%1c", &rematch);
+    return;
+  }*/
+
+  char rematch[4];
+  //char cleanup;
+  printf("\nRematch? Yes/No ");
+  //fgets(rematch, 1, stdin);
+  scanf("%1c", &cleanup);
+  fgets(rematch, 4, stdin);
+  if (strncmp(rematch, "yes", 3) != 0 && strncmp(rematch, "Yes", 3) != 0 && strncmp(rematch, "no", 2) != 0 && strncmp(rematch, "No", 2) != 0) {
+    printf("Invalid choice. Please choose one of the listed options.\n");
+    while (strncmp(rematch, "yes", 3) != 0 && strncmp(rematch, "Yes", 3) != 0 && strncmp(rematch, "no", 2) != 0 && strncmp(rematch, "No", 2) != 0) {
+      fgets(rematch, 4, stdin);
+    }
+  }
+
+  if (strncmp(rematch, "yes", 3) == 0 || strncmp(rematch, "Yes", 3) == 0) {
+    scanf("%1c", &cleanup);
+    runMulti(player1wins, player2wins);
+  }
+  else if (strncmp(rematch, "no", 2) == 0 || strncmp(rematch, "No", 2) == 0)
+    return;
 }
 
 void menu() {
@@ -448,12 +509,20 @@ void menu() {
   printf("* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n");
 
   //read the input from user to determine game mode
-  char mode[14];
-  fgets(mode, 14, stdin);
+
+  char mode[15];
+  char cleanup = ' ';
+  fgets(mode, 15, stdin);
   if (strncmp(mode, "single player", 13) != 0 && strncmp(mode, "Single Player", 13) != 0 && strncmp(mode, "multiplayer", 11) != 0 && strncmp(mode, "Multiplayer", 11) != 0) {
-    printf("Invalid choice. Please choose one of the listed options.\n");
     while (strncmp(mode, "single player", 13) != 0 && strncmp(mode, "Single Player", 13) != 0 && strncmp(mode, "multiplayer", 11) != 0 && strncmp(mode, "Multiplayer", 11) != 0) {
-      fgets(mode, 14, stdin);
+      if (strlen(mode) > 13) {
+        cleanup = ' ';
+        while (cleanup != '\n') {
+          scanf("%1c", &cleanup);
+        }
+      }
+      printf("Invalid choice. Please choose one of the listed options.\n");
+      fgets(mode, 15, stdin);
     }
   }
 
