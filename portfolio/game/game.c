@@ -275,11 +275,12 @@ void runSingle(int *player1wins, int *player2wins) {
   printf("* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n");
 
   //read the input from user to determine board size
-  char mode[8];
-  scanf("%[^\n]%*c", mode);
+  char mode[9];
+  //scanf("%[^\n]%*c", mode);
+  fgets(mode, 9, stdin);
 
   //if standard size is chosen
-  if (strncmp(mode, "standard", 8) == 0 || strncmp(mode, "Standard", 8) == 0) {
+  if (strncmp(mode, "standard", 9) == 0 || strncmp(mode, "Standard", 9) == 0) {
     BOARD *board = newBOARD(6, 7);
     displayBOARD(board);
 
@@ -293,7 +294,7 @@ void runSingle(int *player1wins, int *player2wins) {
     }
   }
   //if custom size is chosen
-  else if (strncmp(mode, "custom", 8) == 0 || strncmp(mode, "Custom", 8) == 0) {
+  else if (strncmp(mode, "custom", 9) == 0 || strncmp(mode, "Custom", 9) == 0) {
     int h = 0;
     int w = 0;
     printf("\nEnter board height: ");
@@ -357,17 +358,18 @@ void runMulti(int *player1wins, int *player2wins) {
   printf("* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n");
 
   //read the input from user to determine board size
-  char mode[8];
-  scanf("%[^\n]%*c", mode);
-  if (strncmp(mode, "standard", 8) != 0 && strncmp(mode, "Standard", 8) != 0 && strncmp(mode, "custom", 8) != 0 && strncmp(mode, "Custom", 8) != 0) {
-    while (strncmp(mode, "standard", 8) != 0 && strncmp(mode, "Standard", 8) != 0 && strncmp(mode, "custom", 8) != 0 && strncmp(mode, "Custom", 8) != 0) {
+  char mode[9];
+  //scanf("%[^\n]%*c", mode);
+  fgets(mode, 9, stdin);
+  if (strncmp(mode, "standard", 9) != 0 && strncmp(mode, "Standard", 9) != 0 && strncmp(mode, "custom", 9) != 0 && strncmp(mode, "Custom", 9) != 0) {
+    while (strncmp(mode, "standard", 9) != 0 && strncmp(mode, "Standard", 9) != 0 && strncmp(mode, "custom", 9) != 0 && strncmp(mode, "Custom", 9) != 0) {
       printf("Invalid choice. Please choose one of the listed options.\n");
       scanf("%[^\n]%*c", mode);
     }
   }
 
   //if standard size is chosen
-  if (strncmp(mode, "standard", 8) == 0 || strncmp(mode, "Standard", 8) == 0) {
+  if (strncmp(mode, "standard", 9) == 0 || strncmp(mode, "Standard", 9) == 0) {
     BOARD *board = newBOARD(6, 7);
     displayBOARD(board);
     //begin game
@@ -380,7 +382,7 @@ void runMulti(int *player1wins, int *player2wins) {
     }
   }
   //if custom size is chosen
-  else if (strncmp(mode, "custom", 8) == 0 || strncmp(mode, "Custom", 8) == 0) {
+  else if (strncmp(mode, "custom", 9) == 0 || strncmp(mode, "Custom", 9) == 0) {
     int h = 0;
     int w = 0;
     printf("\nEnter board height: ");
@@ -442,21 +444,23 @@ void menu() {
   printf("* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n");
 
   //read the input from user to determine game mode
-  char mode[13];
-  scanf("%[^\n]%*c", mode);
-  if (strncmp(mode, "single player", 13) != 0 && strncmp(mode, "Single Player", 13) != 0 && strncmp(mode, "multiplayer", 13) != 0 && strncmp(mode, "Multiplayer", 13) != 0) {
-    while (strncmp(mode, "single player", 13) != 0 && strncmp(mode, "Single Player", 13) != 0 && strncmp(mode, "multiplayer", 13) != 0 && strncmp(mode, "Multiplayer", 13) != 0) {
+  char mode[14];
+  //scanf("%[^\n]%*c", mode);
+  fgets(mode, 14, stdin);
+  if (strncmp(mode, "single player", 14) != 0 && strncmp(mode, "Single Player", 14) != 0 && strncmp(mode, "multiplayer", 11) != 0 && strncmp(mode, "Multiplayer", 11) != 0) {
+    while (strncmp(mode, "single player", 14) != 0 && strncmp(mode, "Single Player", 14) != 0 && strncmp(mode, "multiplayer", 11) != 0 && strncmp(mode, "Multiplayer", 11) != 0) {
       printf("Invalid choice. Please choose one of the listed options.\n");
-      scanf("%[^\n]%*c", mode);
+      //scanf("%[^\n]%*c", mode);
+      fgets(mode, 14, stdin);
     }
   }
 
   int player1wins = 1;
   int player2wins = 1;
   //if single player is chosen
-  if (strncmp(mode, "single player", 13) == 0 || strncmp(mode, "Single Player", 13) == 0)
+  if (strncmp(mode, "single player", 14) == 0 || strncmp(mode, "Single Player", 14) == 0)
     runSingle(&player1wins, &player2wins);
   //if multiplayer is chosen
-  else if (strncmp(mode, "multiplayer", 13) == 0 || strncmp(mode, "Multiplayer", 13) == 0)
+  else if (strncmp(mode, "multiplayer", 11) == 0 || strncmp(mode, "Multiplayer", 11) == 0)
     runMulti(&player1wins, &player2wins);
 }
