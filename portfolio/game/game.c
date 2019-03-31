@@ -10,10 +10,9 @@
 //function that checks if four of player 1's pieces are in a row
 bool connected1(CELL *cell, BOARD *board) {
   //vertical row check
-  /*if (getValCELL(getCellBottom(board, cell)) == 'X' && getValCELL(getCellBottom(board, getCellBottom(board, cell))) == 'X' && getValCELL(getCellBottom(board, getCellBottom(board, getCellBottom(board, cell)))) == 'X')
-    return true;*/
   int inARow = 0;
   int i = 0;
+  int j = 0;
   while (inARow < 4 && i < getRowBOARD(board)) {
     if (getValCELL(getCell(board, i, getColCELL(cell))) == 'X')
       inARow = inARow + 1;
@@ -42,7 +41,7 @@ bool connected1(CELL *cell, BOARD *board) {
   //left diagonal check
   inARow = 0;
   i = getRowCELL(cell);
-  int j = getColCELL(cell);
+  j = getColCELL(cell);
   while (i > 0 && j > 0) {
     i = i - 1;
     j = j - 1;
@@ -86,8 +85,6 @@ bool connected1(CELL *cell, BOARD *board) {
 //function that checks if four of player 2 or the computer's pieces are in a row
 bool connected2(CELL *cell, BOARD *board) {
   //vertical row check
-  /*if (getValCELL(getCellBottom(board, cell)) == 'O' && getValCELL(getCellBottom(board, getCellBottom(board, cell))) == 'O' && getValCELL(getCellBottom(board, getCellBottom(board, getCellBottom(board, cell)))) == 'O')
-    return true;*/
   int inARow = 0;
   int i = 0;
   while (inARow < 4 && i < getRowBOARD(board)) {
@@ -162,14 +159,25 @@ bool connected2(CELL *cell, BOARD *board) {
 //function that runs a single turn for first player
 void player1Turn(BOARD *board, int *win, int *player1wins) {
   //player chooses a column to drop a piece into
+
   int colNum = 0;
+  char conversionString[6];
+  char cleanup = ' ';
   printf("(Player 1) Enter column number: ");
-  scanf("%d", &colNum);
+  fgets(conversionString, 6, stdin);
+  colNum = atoi(conversionString);
   if (colNum < 1 || colNum > getColBOARD(board)) {
     while (colNum < 1 || colNum > getColBOARD(board)) {
+      if (conversionString[strlen(conversionString) - 1] != '\n') {
+        cleanup = ' ';
+        while (cleanup != '\n') {
+          scanf("%1c", &cleanup);
+        }
+      }
       printf("Invalid column. Please enter a column between 1 and %d.", getColBOARD(board));
       printf("\n(Player 1) Enter column number: ");
-      scanf("%d", &colNum);
+      fgets(conversionString, 6, stdin);
+      colNum = atoi(conversionString);
     }
   }
   colNum = colNum - 1;
@@ -197,14 +205,25 @@ void player1Turn(BOARD *board, int *win, int *player1wins) {
 //function that runs a single turn for second player
 void player2Turn(BOARD *board, int *win, int *player2wins) {
   //player chooses a column to drop a piece into
+
   int colNum = 0;
+  char conversionString[6];
+  char cleanup = ' ';
   printf("(Player 2) Enter column number: ");
-  scanf("%d", &colNum);
+  fgets(conversionString, 6, stdin);
+  colNum = atoi(conversionString);
   if (colNum < 1 || colNum > getColBOARD(board)) {
     while (colNum < 1 || colNum > getColBOARD(board)) {
+      if (conversionString[strlen(conversionString) - 1] != '\n') {
+        cleanup = ' ';
+        while (cleanup != '\n') {
+          scanf("%1c", &cleanup);
+        }
+      }
       printf("Invalid column. Please enter a column between 1 and %d.", getColBOARD(board));
       printf("\n(Player 2) Enter column number: ");
-      scanf("%d", &colNum);
+      fgets(conversionString, 6, stdin);
+      colNum = atoi(conversionString);
     }
   }
   colNum = colNum - 1;
@@ -368,7 +387,6 @@ void runSingle(int *player1wins, int *player2wins) {
   printf("\nRematch? Yes / No: ");
   char rematch[5];
   cleanup = ' ';
-  scanf("%1c", &cleanup);
   fgets(rematch, 5, stdin);
   if (strncmp(rematch, "yes", 3) != 0 && strncmp(rematch, "Yes", 3) != 0 && strncmp(rematch, "no", 2) != 0 && strncmp(rematch, "No", 2) != 0) {
     while (strncmp(rematch, "yes", 3) != 0 && strncmp(rematch, "Yes", 3) != 0 && strncmp(rematch, "no", 2) != 0 && strncmp(rematch, "No", 2) != 0) {
@@ -384,11 +402,16 @@ void runSingle(int *player1wins, int *player2wins) {
   }
 
   if (strncmp(rematch, "yes", 3) == 0 || strncmp(rematch, "Yes", 3) == 0) {
-    scanf("%1c", &cleanup);
     runSingle(player1wins, player2wins);
   }
-  else if (strncmp(rematch, "no", 2) == 0 || strncmp(rematch, "No", 2) == 0)
+  else if (strncmp(rematch, "no", 2) == 0 || strncmp(rematch, "No", 2) == 0) {
+    printf("\nFinal Score\nPlayer 1: %d\nThe Computer: %d\n", *player1wins - 1, *player2wins - 1);
+    if (*player1wins > *player2wins)
+      printf("\nPlayer 1 had the most wins.\n");
+    else
+      printf("\nThe Computer had the most wins.\n");
     return;
+  }
 }
 
 void runMulti(int *player1wins, int *player2wins) {
@@ -503,7 +526,6 @@ void runMulti(int *player1wins, int *player2wins) {
   printf("\nRematch? Yes / No: ");
   char rematch[5];
   cleanup = ' ';
-  scanf("%1c", &cleanup);
   fgets(rematch, 5, stdin);
   if (strncmp(rematch, "yes", 3) != 0 && strncmp(rematch, "Yes", 3) != 0 && strncmp(rematch, "no", 2) != 0 && strncmp(rematch, "No", 2) != 0) {
     while (strncmp(rematch, "yes", 3) != 0 && strncmp(rematch, "Yes", 3) != 0 && strncmp(rematch, "no", 2) != 0 && strncmp(rematch, "No", 2) != 0) {
@@ -519,11 +541,16 @@ void runMulti(int *player1wins, int *player2wins) {
   }
 
   if (strncmp(rematch, "yes", 3) == 0 || strncmp(rematch, "Yes", 3) == 0) {
-    scanf("%1c", &cleanup);
     runMulti(player1wins, player2wins);
   }
-  else if (strncmp(rematch, "no", 2) == 0 || strncmp(rematch, "No", 2) == 0)
+  else if (strncmp(rematch, "no", 2) == 0 || strncmp(rematch, "No", 2) == 0) {
+    printf("\nFinal Score\nPlayer 1: %d\nPlayer 2: %d\n", *player1wins - 1, *player2wins - 1);
+    if (*player1wins > *player2wins)
+      printf("\nPlayer 1 had the most wins.\n");
+    else
+      printf("\nPlayer 2 had the most wins.\n");
     return;
+  }
 }
 
 void menu() {
