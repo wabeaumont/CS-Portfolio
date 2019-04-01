@@ -2,7 +2,7 @@
 
 Description: This portfolio project implements the game Connect 4.
 
-Beginning Instructions: Once all the files have been downloaded, navigate to the "game" folder in Ubuntu. Once there, enter the command "make" into the command line to compile all of the necessary files. After the files have finished compiling, enter the command "c4" to begin the game.
+Beginning Instructions: Once all the files have been downloaded, navigate to the folder containing them in Ubuntu. Once there, enter the command "make" into the command line to compile all of the necessary files. After the files have finished compiling, enter the command "c4" to begin the game.
 
 Menu Navigation: The game menu will display two options to you and prompt for input. To select a menu option, simply enter one of the two options listed on the menu into the command line. The game will accept menu options that are typed as displayed or in all lowercase. Inproper input will prompt a message telling you that what you entered will not work and you will be asked again to enter a choice until you provide valid input.
 
