@@ -267,6 +267,8 @@ void player2Turn(BOARD *board, int *win, int *player2wins) {
 
 //function that runs a single turn for the computer
 void computerTurn(BOARD *board, int *win, int *player2wins) {
+  printf("Computer's Turn: \n");
+
   //computer chooses a column to drop a piece into
   int colNum = 0;
   int rowNum = 0;
@@ -275,6 +277,7 @@ void computerTurn(BOARD *board, int *win, int *player2wins) {
 
   //check each column to see if the top piece in that column is an X
   for (colNum = 0; colNum < getColBOARD(board); colNum = colNum + 1) {
+    rowNum = 0;
     while (getValCELL(getCell(board, rowNum, colNum)) == ' ' && rowNum < getRowBOARD(board) - 1)
       rowNum = rowNum + 1;
 
@@ -301,7 +304,27 @@ void computerTurn(BOARD *board, int *win, int *player2wins) {
       }
     }
   }
-  colNum = getINTEGER((INTEGER *) getDA(da, rand() % sizeDA(da)));
+  if (sizeDA(da) != 0)
+    colNum = getINTEGER((INTEGER *) getDA(da, rand() % sizeDA(da)));
+  else {
+    for (colNum = 0; colNum < getColBOARD(board); colNum = colNum + 1) {
+      rowNum = 0;
+      while (getValCELL(getCell(board, rowNum, colNum)) == ' ' && rowNum < getRowBOARD(board) - 1)
+        rowNum = rowNum + 1;
+
+        if (getValCELL(getCell(board, rowNum, colNum)) == 'X') {
+
+        //check for empty column to the left of X piece
+        if (colNum != 0 && getValCELL(getCellLeft(board, getCell(board, rowNum, colNum))) == ' ')
+            insertDAback(da, newINTEGER(colNum - 1));
+
+        //check for empty column to the right of X piece
+        if (colNum != getColBOARD(board) - 1 && getValCELL(getCellRight(board, getCell(board, rowNum, colNum))) == ' ')
+            insertDAback(da, newINTEGER(colNum + 1));
+      }
+    }
+    colNum = getINTEGER((INTEGER *) getDA(da, rand() % sizeDA(da)));
+  }
   freeDA(da);
 
   //piece is placed into the board
