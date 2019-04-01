@@ -1,6 +1,7 @@
 //Author: Williams Beaumont
 //Purpose: Class implementing a dynamic array.
 
+ #include <stdbool.h>
  #include "da.h"
 
  //Structure of the dynamic array
@@ -158,6 +159,20 @@ int debugDA(DA *items,int level) {
   int value = items->debug;
   items->debug = level;
   return value;
+}
+
+bool searchDA(DA *items, void *value) {
+  int i = 0;
+  void *comp;
+  bool answer = false;
+  while (answer == false && i < sizeDA(items)) {
+    comp = getDA(items, i);
+    if (comp == value)
+      answer = true;
+    else
+        i = i + 1;
+  }
+  return answer;
 }
 
 //Allows user to free dynamic array

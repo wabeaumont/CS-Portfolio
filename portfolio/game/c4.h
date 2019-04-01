@@ -11,8 +11,8 @@
 #include "da.h"
 #include "queue.h"
 #include "cda.h"
-#include "options.h"
 #include "game.h"
+#include "integer.h"
 
 extern void menu();
 extern int main();

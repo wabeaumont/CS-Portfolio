@@ -12,8 +12,8 @@
 #include "cda.h"
 #include "stack.h"
 #include "queue.h"
-#include "options.h"
 #include "game.h"
+#include "integer.h"
 
 void menu();
 

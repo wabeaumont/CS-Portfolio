@@ -23,11 +23,7 @@ extern CELL *getCellLeft(BOARD *board, CELL *cell);
 extern CELL *getCellRight(BOARD *board, CELL *cell);
 extern CELL *getCellTop(BOARD *board, CELL *cell);
 extern CELL *getCellBottom(BOARD *board, CELL *cell);
-//extern void buildBOARD(BOARD *board, unsigned int seed);
 extern void displayBOARD(BOARD *board);
-//extern void writeBOARD(BOARD *board, char *filename);
-//extern void resizeBOARD(BOARD *board, int row, int col);
-//extern void readBOARD(BOARD *board, char *filename);
 extern void freeBOARD(BOARD *board);
 
 #endif

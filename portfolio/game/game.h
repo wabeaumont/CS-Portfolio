@@ -6,7 +6,9 @@
 #include <assert.h>
 #include <stdarg.h>
 #include <string.h>
+#include <stdbool.h>
 #include "board.h"
+#include "integer.h"
 
 extern bool connected1(CELL *cell, BOARD *board);
 extern bool connected2(CELL *cell, BOARD *board);

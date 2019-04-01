@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stdbool.h>
 
 typedef struct da DA;
 
@@ -20,6 +21,7 @@ extern void *setDA(DA *items,int index,void *value);
 extern int   sizeDA(DA *items);
 extern void  displayDA(DA *items,FILE *fp);
 extern int   debugDA(DA *items,int level);
+extern bool searchDA(DA *items, void *value);
 extern void  freeDA(DA *items);
 
 #define insertDAback(items,value) insertDA(items,sizeDA(items),value)

@@ -1,19 +1,19 @@
-OBJS = c4.o cda.o da.o queue.o stack.o cell.o board.o options.o game.o
+OBJS = c4.o cda.o da.o queue.o stack.o cell.o board.o game.o integer.o
 OOPTS = -Wall -Wextra -g -c -std=c99
 LOPTS = -Wall -Wextra -g -std=c99
 EXEC = c4
 
-c4 : c4.o game.o options.o board.o cell.o stack.o da.o queue.o cda.o
+c4 : c4.o game.o board.o cell.o stack.o da.o queue.o cda.o integer.o
 		gcc $(LOPTS) $(OBJS) -o c4
 
-c4.o : c4.c c4.h game.o options.o board.o cell.o stack.o da.o queue.o cda.o
+c4.o : c4.c c4.h game.o board.o cell.o stack.o da.o queue.o cda.o integer.o
 		gcc $(OOPTS) c4.c
 
-game.o : game.c game.h board.o
+game.o : game.c game.h board.o integer.o
 		gcc $(OOPTS) game.c
 
-options.o : options.c options.h board.o cell.o stack.o da.o queue.o cda.o
-		gcc $(OOPTS) options.c
+integer.o : integer.c integer.h
+		gcc $(OOPTS) integer.c
 
 board.o : board.c board.h cell.o queue.o stack.o da.o cda.o
 		gcc $(OOPTS) board.c
@@ -33,11 +33,8 @@ cda.o : cda.c cda.h
 da.o : da.c da.h
 		gcc $(OOPTS) da.c
 
-test : c4
-		c4 $(ARGS)
-
 valgrind: c4
-		valgrind --leak-check=full --show-leak-kinds=all c4 $(ARGS)
+		valgrind --leak-check=full --show-leak-kinds=all c4
 
 clean	:
 		rm -f $(OBJS) $(EXEC)

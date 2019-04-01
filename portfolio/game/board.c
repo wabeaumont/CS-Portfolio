@@ -88,32 +88,7 @@ CELL *getCellBottom(BOARD *board, CELL *cell) {
   else
     return NULL;
 }
-/*
-//Function to build a board
-void buildBOARD(BOARD *board, unsigned int seed) {
-  srand(seed);
-  STACK *stack = newSTACK();
-  push(stack, getCell(board, 0, 0));
-  setVisitedCELL(getCell(board, 0, 0), true);
-  CELL **neighbors = malloc(sizeof(CELL *) * 4);
-  int unvisited = 0;
-  CELL *nextToVisit = getCell(board, 0, 0);
-  while (sizeSTACK(stack) > 0) {
-    unvisited = 0;
-    checkNeighborsBuild(board, stack, &unvisited, neighbors);
-    if (unvisited == 0)
-      pop(stack);
-    else {
-      nextToVisit = neighbors[rand() % unvisited];
-      editNext(board, peekSTACK(stack), nextToVisit);
-      push(stack, nextToVisit);
-    }
-  }
-  setRightCELL(getCell(board, getRowBOARD(board) - 1, getColBOARD(board) - 1), false);
-  freeSTACK(stack);
-  free(neighbors);
-}
-*/
+
 //Function to display the board
 void displayBOARD(BOARD *board) {
   int i = 0;
@@ -162,83 +137,13 @@ void displayBOARD(BOARD *board) {
       printf(" %d ", i + 1);
     else if (i < 1000)
       printf(" %d", i + 1);
-    else 
+    else
       printf("%d", i + 1);
   }
   printf("\n\n");
 }
-/*
-void writeBOARD(BOARD *board, char *filename) {
-  FILE *fp = fopen(filename, "w");
-  fprintf(fp, "%d\n", getRowBOARD(board));
-  fprintf(fp, "%d\n", getColBOARD(board));
-  int i = 0;
-  int j = 0;
-  for (i = 0; i < getRowBOARD(board); i = i + 1) {
-    for (j = 0; j < getColBOARD(board); j = j + 1) {
-      if (getValCELL(getCell(board, i, j)) == '\0')
-        fprintf(fp, "_");
-      else
-        fprintf(fp, "%c", getValCELL(getCell(board, i, j)));
-      fprintf(fp, "%d", getBottomCELL(getCell(board, i, j)));
-      fprintf(fp, "%d\n", getRightCELL(getCell(board, i, j)));
-    }
-  }
-  fclose(fp);
-}
 
-void resizeBOARD(BOARD *board, int row, int col) {
-  CELL ***temp = malloc(sizeof(CELL **) * row);
-  int i = 0;
-  int j = 0;
-  for (i = 0; i < row; i = i + 1) {
-    temp[i] = malloc(sizeof(CELL *) * col);
-    for (j = 0; j < col; j = j + 1) {
-      temp[i][j] = newCELL(i, j);
-    }
-  }
-  for (i = 0; i < getRowBOARD(board); i = i + 1) {
-    for (j = 0; j < getColBOARD(board); j = j + 1)
-      free(board->cells[i][j]);
-  }
-  for (i = 0; i < getRowBOARD(board); i = i + 1)
-    free(board->cells[i]);
-  free(board->cells);
-  board->cells = temp;
-  setRowBOARD(board, row);
-  setColBOARD(board, col);
-}
-
-void readBOARD(BOARD *board, char *filename) {
-  FILE *fp = fopen(filename, "r");
-  int row = 0;
-  int col = 0;
-  int scanNum = 0;
-  char scanChar = '_';
-  fscanf(fp, "%d", &scanNum);
-  row = scanNum;
-  fscanf(fp, "%d", &scanNum);
-  col = scanNum;
-  resizeBOARD(board, row, col);
-  int i = 0;
-  int j = 0;
-  for (i = 0; i < getRowBOARD(board); i = i + 1) {
-    for (j = 0; j < getColBOARD(board); j = j + 1) {
-      fscanf(fp, "%1c", &scanChar);
-      fscanf(fp, "%1c", &scanChar);
-      if (scanChar == '_')
-        setValCELL(getCell(board, i, j), ' ');
-      else
-        setValCELL(getCell(board, i, j), scanChar);
-      fscanf(fp, "%1d", &scanNum);
-      setBottomCELL(getCell(board, i, j), scanNum);
-      fscanf(fp, "%1d", &scanNum);
-      setRightCELL(getCell(board, i, j), scanNum);
-    }
-  }
-  fclose(fp);
-}
-*/
+//Function to free the board
 void freeBOARD(BOARD *board) {
   int i = 0;
   int j = 0;

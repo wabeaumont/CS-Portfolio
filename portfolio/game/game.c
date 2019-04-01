@@ -5,7 +5,9 @@
 #include <assert.h>
 #include <stdarg.h>
 #include <string.h>
+#include <stdbool.h>
 #include "board.h"
+#include "integer.h"
 
 //function that checks if four of player 1's pieces are in a row
 bool connected1(CELL *cell, BOARD *board) {
@@ -156,6 +158,19 @@ bool connected2(CELL *cell, BOARD *board) {
   return false;
 }
 
+void tied(BOARD *board, int *win) {
+  int i = 0;
+  bool tie = true;
+  for (i = 0; i < getColBOARD(board) - 1; i = i + 1) {
+    if (getValCELL(getCell(board, 0, i)) == ' ')
+      tie = false;
+  }
+  if (tie == true) {
+    printf("It's a tie!\n");
+    *win = *win + 1;
+  }
+}
+
 //function that runs a single turn for first player
 void player1Turn(BOARD *board, int *win, int *player1wins) {
   //player chooses a column to drop a piece into
@@ -250,11 +265,45 @@ void player2Turn(BOARD *board, int *win, int *player2wins) {
 
 //function that runs a single turn for the computer
 void computerTurn(BOARD *board, int *win, int *player2wins) {
-  /*//computer chooses a column to drop a piece into
+  //computer chooses a column to drop a piece into
+  int colNum = 0;
+  int rowNum = 0;
+  DA *da = newDA();
+  setDAfree(da, freeINTEGER);
 
+  //check each column to see if the top piece in that column is an X
+  for (colNum = 0; colNum < getColBOARD(board); colNum = colNum + 1) {
+    while (getValCELL(getCell(board, rowNum, colNum)) == ' ' && rowNum < getRowBOARD(board) - 1)
+      rowNum = rowNum + 1;
+
+    //add columns of adjacent empty cells into array of possible choices
+    if (getValCELL(getCell(board, rowNum, colNum)) == 'X') {
+      //check for empty space above X piece
+      if (rowNum != 0)
+        insertDAback(da, newINTEGER(colNum));
+
+      //check for empty space to the left of X piece
+      if (colNum != 0 && getValCELL(getCellLeft(board, getCell(board, rowNum, colNum))) == ' ') {
+        if (rowNum == getRowBOARD(board) - 1)
+          insertDAback(da, newINTEGER(colNum - 1));
+        else if (getValCELL(getCellBottom(board, getCellLeft(board, getCell(board, rowNum, colNum)))) != ' ')
+          insertDAback(da, newINTEGER(colNum - 1));
+      }
+
+      //check for empty space to the right of X piece
+      if (colNum != getColBOARD(board) - 1 && getValCELL(getCellRight(board, getCell(board, rowNum, colNum))) == ' ') {
+        if (rowNum == getRowBOARD(board) - 1)
+          insertDAback(da, newINTEGER(colNum + 1));
+        else if (getValCELL(getCellBottom(board, getCellRight(board, getCell(board, rowNum, colNum)))) != ' ')
+          insertDAback(da, newINTEGER(colNum + 1));
+      }
+    }
+  }
+  colNum = getINTEGER((INTEGER *) getDA(da, rand() % sizeDA(da)));
+  freeDA(da);
 
   //piece is placed into the board
-  int rowNum = 0;
+  rowNum = 0;
   while (getValCELL(getCell(board, rowNum + 1, colNum)) == ' ' && rowNum < getRowBOARD(board) - 2) {
     rowNum = rowNum + 1;
   }
@@ -267,10 +316,11 @@ void computerTurn(BOARD *board, int *win, int *player2wins) {
 
   //check for win condition
   if (connected2(getCell(board, rowNum, colNum), board) == true) {
-    printf("Player 2 Wins! (Total Score: %d)\n", *player2wins);
+    printf("The Computer Wins! (Total Score: %d)\n", *player2wins);
     *win = *win + 1;
     *player2wins = *player2wins + 1;
-  }*/
+  }
+  tied(board, win);
 }
 
 //function that incorporates previous ones into a playable version
